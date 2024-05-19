@@ -59,7 +59,7 @@ const Footer = () => {
             Nexus
           </Typography>
           <Typography color={"white"} component={"p"}>
-            privacy Policy || Terms & Comditions
+            privacy Policy || Terms & Conditions
           </Typography>
         </Stack>
       </Container>
