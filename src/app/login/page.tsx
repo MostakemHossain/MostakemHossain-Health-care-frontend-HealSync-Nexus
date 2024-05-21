@@ -1,4 +1,6 @@
+"use client";
 import assets from "@/assets";
+import { userLogin } from "@/services/userLogin";
 import {
   Box,
   Button,
@@ -10,8 +12,31 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+export interface IFormValues {
+  email: string;
+  password: string;
+}
 const Login = () => {
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IFormValues>();
+
+  const onSubmit: SubmitHandler<IFormValues> = async (values) => {
+    console.log(values);
+    try {
+      const res = await userLogin(values);
+      console.log(res);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
   return (
     <Container
       sx={{
@@ -63,7 +88,7 @@ const Login = () => {
               </Typography>
             </Box>
           </Stack>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
               <Grid container spacing={2} my={2}>
                 <Grid item xs={12} sm={6}>
@@ -74,6 +99,7 @@ const Login = () => {
                     variant="outlined"
                     size="small"
                     fullWidth
+                    {...register("email", { required: true })}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -84,6 +110,7 @@ const Login = () => {
                     variant="outlined"
                     size="small"
                     fullWidth
+                    {...register("password", { required: true })}
                   />
                 </Grid>
               </Grid>
@@ -101,6 +128,7 @@ const Login = () => {
                   margin: "10px 0px",
                 }}
                 fullWidth
+                type="submit"
               >
                 Login
               </Button>
