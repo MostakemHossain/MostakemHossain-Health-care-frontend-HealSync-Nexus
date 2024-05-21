@@ -1,4 +1,5 @@
 import HeroSection from "@/components/UI/HomePage/HeroSection/HeroSection";
+import HowItWorks from "@/components/UI/HomePage/HowItWorks/WhoItWorks";
 import Specialist from "@/components/UI/HomePage/Specialist/Specialist";
 import State from "@/components/UI/HomePage/Stats/State";
 import TopRatedDoctors from "@/components/UI/HomePage/TopRatedDoctors/TopRatedDoctors";
@@ -10,6 +11,7 @@ const HomePage = () => {
       <Specialist />
       <TopRatedDoctors />
       <WhyUs />
+      <HowItWorks />
       <State />
     </>
   );
