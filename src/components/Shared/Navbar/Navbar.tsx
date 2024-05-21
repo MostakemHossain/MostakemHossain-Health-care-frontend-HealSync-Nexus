@@ -1,10 +1,19 @@
 "use client";
-import { getUserInfo, isLoggedIn } from "@/services/auth.service";
+import { getUserInfo, removeUser } from "@/services/auth.service";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const userInfo = getUserInfo();
+  const router = useRouter();
+  const handleSignOut = () => {
+    removeUser();
+    toast.success("Logout Successfully");
+    router.push("/");
+    window.location.reload();
+  };
   return (
     <Container>
       <Stack
@@ -37,8 +46,13 @@ const Navbar = () => {
             NGOs
           </Typography>
         </Stack>
-        {isLoggedIn() ? (
-          <Button color="error" component={Link} href="/">
+        {userInfo?.email ? (
+          <Button
+            color="error"
+            onClick={handleSignOut}
+            component={Link}
+            href="/"
+          >
             Logout
           </Button>
         ) : (
