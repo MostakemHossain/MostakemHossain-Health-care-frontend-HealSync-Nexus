@@ -1,5 +1,6 @@
 "use client";
 import assets from "@/assets";
+import { storeUserInfo } from "@/services/auth.service";
 import { userLogin } from "@/services/userLogin";
 import {
   Box,
@@ -29,10 +30,12 @@ const Login = () => {
   } = useForm<IFormValues>();
 
   const onSubmit: SubmitHandler<IFormValues> = async (values) => {
-    console.log(values);
     try {
       const res = await userLogin(values);
-      console.log(res);
+
+      if (res?.data?.accessToken) {
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+      }
     } catch (error: any) {
       console.error(error.message);
     }
