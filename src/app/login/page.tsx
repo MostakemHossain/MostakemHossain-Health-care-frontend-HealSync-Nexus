@@ -1,36 +1,20 @@
 "use client";
 import assets from "@/assets";
+import HealthSyncInput from "@/components/Forms/HealthSyncInput";
+import HealthSyncForm from "@/components/Forms/healthSyncForm";
 import { storeUserInfo } from "@/services/auth.service";
 import { userLogin } from "@/services/userLogin";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-export interface IFormValues {
-  email: string;
-  password: string;
-}
 const Login = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IFormValues>();
 
-  const onSubmit: SubmitHandler<IFormValues> = async (values) => {
+  const handleLogin = async (values: FieldValues) => {
     try {
       const res = await userLogin(values);
 
@@ -94,29 +78,25 @@ const Login = () => {
               </Typography>
             </Box>
           </Stack>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <HealthSyncForm onSubmit={handleLogin}>
             <Box>
               <Grid container spacing={2} my={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="outlined-basic"
+                  <HealthSyncInput
+                    name="email"
                     label="Email"
                     type="email"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("email", { required: true })}
+                    fullWidth={true}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="outlined-basic"
+                  <HealthSyncInput
+                    name="password"
                     label="Password"
                     type="password"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("password", { required: true })}
+                    fullWidth={true}
+                    required={true}
                   />
                 </Grid>
               </Grid>
@@ -154,7 +134,7 @@ const Login = () => {
                 </Link>
               </Typography>
             </Box>
-          </form>
+          </HealthSyncForm>
         </Box>
       </Stack>
     </Container>
