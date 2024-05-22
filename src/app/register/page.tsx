@@ -11,6 +11,7 @@ import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -41,6 +42,7 @@ export const defaultvalues = {
 
 const Register = () => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const handleRegister = async (values: FieldValues) => {
     const data = modifyPayload(values);
     try {
@@ -55,9 +57,12 @@ const Register = () => {
           storeUserInfo({ accessToken: result?.data?.accessToken });
           router.push("/");
         }
+      } else {
+        setError(res.message);
       }
     } catch (error: any) {
       console.error(error.message);
+      console.log(error);
     }
   };
 
@@ -103,6 +108,21 @@ const Register = () => {
               </Typography>
             </Box>
           </Stack>
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "3px",
+                  borderRadius: "4px",
+                  color: "#fff",
+                  marginTop: "2px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
           <HealthSyncForm
             onSubmit={handleRegister}
             resolver={zodResolver(patientRegistrationvalidationSchema)}
