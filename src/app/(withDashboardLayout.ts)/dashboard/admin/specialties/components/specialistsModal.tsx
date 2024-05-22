@@ -2,16 +2,33 @@ import HealSyncFileUpload from "@/components/Forms/HealSyncFileUpload/HealSyncFi
 import HealthSyncInput from "@/components/Forms/HealthSyncInput";
 import HealthSyncForm from "@/components/Forms/healthSyncForm";
 import HealSyncModal from "@/components/Shared/HealSyncModal/HealSyncModal";
+import { useCreateSpecialityMutation } from "@/redux/api/specialiesApi";
+import { modifyPayload } from "@/utils/modifyPayload";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const SpecialistsModal = ({ open, setOpen }: TProps) => {
-  const handleSubmit = (values: FieldValues) => {};
+  const [createSpeciality] = useCreateSpecialityMutation();
+  const handleSubmit = async (values: FieldValues) => {
+    console.log(values);
+    const data = modifyPayload(values);
+    try {
+      const res = await createSpeciality(data).unwrap();
+
+      if (res?.id) {
+        toast.success(res?.message);
+        setOpen(false);
+      }
+    } catch (error: any) {
+      console.error(error.massage);
+    }
+  };
   return (
     <HealSyncModal open={open} setOpen={setOpen} title="Create A new Specialty">
       <HealthSyncForm onSubmit={handleSubmit}>
@@ -27,6 +44,7 @@ const SpecialistsModal = ({ open, setOpen }: TProps) => {
           sx={{
             mt: 1,
           }}
+          type="submit"
         >
           Create Speciality
         </Button>
