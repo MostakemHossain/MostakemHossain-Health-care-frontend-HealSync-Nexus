@@ -6,7 +6,7 @@ type TInputProps = {
   type?: string;
   size?: "small" | "medium";
   fullWidth?: boolean;
-  required: boolean;
+  required?: boolean;
   sx?: SxProps;
   placeholder?: string;
 };
@@ -26,7 +26,7 @@ const HealthSyncInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           label={label}
@@ -37,6 +37,8 @@ const HealthSyncInput = ({
           fullWidth={fullWidth}
           placeholder={label}
           required={required}
+          error={!!error?.message}
+          helperText={error?.message}
         />
       )}
     />

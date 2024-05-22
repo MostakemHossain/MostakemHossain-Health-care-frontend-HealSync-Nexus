@@ -4,12 +4,19 @@ import HealthSyncInput from "@/components/Forms/HealthSyncInput";
 import HealthSyncForm from "@/components/Forms/healthSyncForm";
 import { storeUserInfo } from "@/services/auth.service";
 import { userLogin } from "@/services/userLogin";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+
+export const loginValidationSchema = z.object({
+  email: z.string().email("Please enter a valid email Address"),
+  password: z.string().min(1, "Password must required"),
+});
 
 const Login = () => {
   const router = useRouter();
@@ -78,7 +85,14 @@ const Login = () => {
               </Typography>
             </Box>
           </Stack>
-          <HealthSyncForm onSubmit={handleLogin}>
+          <HealthSyncForm
+            onSubmit={handleLogin}
+            resolver={zodResolver(loginValidationSchema)}
+            defaultValues={{
+              email: "",
+              password: "",
+            }}
+          >
             <Box>
               <Grid container spacing={2} my={2}>
                 <Grid item xs={12} sm={6}>
@@ -87,7 +101,6 @@ const Login = () => {
                     label="Email"
                     type="email"
                     fullWidth={true}
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -96,7 +109,6 @@ const Login = () => {
                     label="Password"
                     type="password"
                     fullWidth={true}
-                    required={true}
                   />
                 </Grid>
               </Grid>
