@@ -6,12 +6,39 @@ import { storeUserInfo } from "@/services/auth.service";
 import { registerPatient } from "@/services/registerPatient";
 import { userLogin } from "@/services/userLogin";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+
+export const patientValidationSchema = z.object({
+  name: z.string().min(1, "Please Enter your name"),
+  email: z.string().email("Please enter a valid email Address"),
+  contactNumber: z
+    .string()
+    .regex(/^\d{11}$/, "Please Provide a valid phone number"),
+  address: z.string().min(1, "Please Enter your Address!!"),
+});
+
+export const patientRegistrationvalidationSchema = z.object({
+  password: z.string().min(1, "Password must be 6 Characters"),
+  patient: patientValidationSchema,
+});
+
+export const defaultvalues = {
+  password: "",
+  patient: {
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+  },
+};
+
 const Register = () => {
   const router = useRouter();
   const handleRegister = async (values: FieldValues) => {
@@ -76,7 +103,11 @@ const Register = () => {
               </Typography>
             </Box>
           </Stack>
-          <HealthSyncForm onSubmit={handleRegister}>
+          <HealthSyncForm
+            onSubmit={handleRegister}
+            resolver={zodResolver(patientRegistrationvalidationSchema)}
+            defaultValues={defaultvalues}
+          >
             <Box>
               <Grid container spacing={2} my={2}>
                 <Grid item xs={12}>
@@ -86,7 +117,6 @@ const Register = () => {
                     type="text"
                     size="small"
                     fullWidth
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -96,7 +126,6 @@ const Register = () => {
                     size="small"
                     fullWidth
                     name="patient.email"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -106,7 +135,6 @@ const Register = () => {
                     size="small"
                     fullWidth
                     name="password"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -116,7 +144,6 @@ const Register = () => {
                     name="patient.contactNumber"
                     size="small"
                     fullWidth={true}
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -126,7 +153,6 @@ const Register = () => {
                     size="small"
                     fullWidth
                     name="patient.address"
-                    required={true}
                   />
                 </Grid>
               </Grid>
