@@ -2,6 +2,7 @@ import HealSyncDatePicker from "@/components/Forms/HealSyncDatePicker";
 import HealSyncTimePicker from "@/components/Forms/HealSyncTimePicker";
 import HealthSyncForm from "@/components/Forms/healthSyncForm";
 import HealSyncModal from "@/components/Shared/HealSyncModal/HealSyncModal";
+import { dateFormatter } from "@/utils/DateFormatter";
 import { Button, Grid } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 
@@ -12,6 +13,9 @@ type TProps = {
 
 const ScheduleModal = ({ open, setOpen }: TProps) => {
   const onSubmit = async (values: FieldValues) => {
+    values.startDate = dateFormatter(values.startDate);
+    values.endDate = dateFormatter(values.endDate);
+    console.log(values);
     try {
     } catch (error) {
       console.error(error);
