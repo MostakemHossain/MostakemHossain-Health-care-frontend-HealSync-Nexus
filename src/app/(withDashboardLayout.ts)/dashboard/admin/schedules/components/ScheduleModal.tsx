@@ -1,4 +1,5 @@
 import HealSyncDatePicker from "@/components/Forms/HealSyncDatePicker";
+import HealSyncTimePicker from "@/components/Forms/HealSyncTimePicker";
 import HealthSyncForm from "@/components/Forms/healthSyncForm";
 import HealSyncModal from "@/components/Shared/HealSyncModal/HealSyncModal";
 import { Button, Grid } from "@mui/material";
@@ -32,8 +33,16 @@ const ScheduleModal = ({ open, setOpen }: TProps) => {
           <Grid item md={12} my={2}>
             <HealSyncDatePicker name="endDate" label="End Date" />
           </Grid>
+          <Grid item md={6}>
+            <HealSyncTimePicker name="startTime" label="Start Time" />
+          </Grid>
+          <Grid item md={6}>
+            <HealSyncTimePicker name="endTime" label="End Time" />
+          </Grid>
         </Grid>
-        <Button type="submit">Create</Button>
+        <Button sx={{ mt: 1 }} type="submit">
+          Create
+        </Button>
       </HealthSyncForm>
     </HealSyncModal>
   );
