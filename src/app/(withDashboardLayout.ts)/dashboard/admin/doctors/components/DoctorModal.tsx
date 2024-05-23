@@ -20,7 +20,7 @@ const DoctorModal = ({ open, setOpen }: TProps) => {
   const onSubmit = async (values: FieldValues) => {
     values.doctor.experience = Number(values.doctor.experience);
     values.doctor.appointmentFee = Number(values.doctor.appointmentFee);
-    console.log(values);
+    
     const data = modifyPayload(values);
     console.log(data);
     try {
