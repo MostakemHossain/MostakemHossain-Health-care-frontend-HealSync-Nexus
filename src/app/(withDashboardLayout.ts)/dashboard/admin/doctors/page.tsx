@@ -1,5 +1,6 @@
 "use client";
 import { useGetAllDoctorsQuery } from "@/redux/api/doctorApi";
+import { useDebounced } from "@/redux/hooks";
 import {
   Box,
   Button,
@@ -14,7 +15,17 @@ import DoctorModal from "./components/DoctorModal";
 
 const DoctorPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { data, isLoading } = useGetAllDoctorsQuery({});
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+  const { data, isLoading } = useGetAllDoctorsQuery({ ...query });
   const doctors = data?.data;
   const meta = data?.meta;
 
@@ -61,7 +72,11 @@ const DoctorPage = () => {
       >
         <Button onClick={() => setIsModalOpen(true)}>Create A Doctor</Button>
         <DoctorModal open={isModalOpen} setOpen={setIsModalOpen} />
-        <TextField size="small" placeholder="Search Doctor" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          placeholder="Search Doctor"
+        />
       </Stack>
       {!isLoading ? (
         <Box
