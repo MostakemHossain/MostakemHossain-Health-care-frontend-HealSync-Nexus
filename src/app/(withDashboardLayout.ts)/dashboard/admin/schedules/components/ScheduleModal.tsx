@@ -15,7 +15,6 @@ const ScheduleModal = ({ open, setOpen }: TProps) => {
   const onSubmit = async (values: FieldValues) => {
     values.startDate = dateFormatter(values.startDate);
     values.endDate = dateFormatter(values.endDate);
-    console.log(values);
     try {
     } catch (error) {
       console.error(error);
