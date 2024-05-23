@@ -1,5 +1,8 @@
 "use client";
-import { useGetAllDoctorsQuery } from "@/redux/api/doctorApi";
+import {
+  useDeleteDoctorMutation,
+  useGetAllDoctorsQuery,
+} from "@/redux/api/doctorApi";
 import { useDebounced } from "@/redux/hooks";
 import {
   Box,
@@ -11,10 +14,12 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridDeleteIcon } from "@mui/x-data-grid";
 import { useState } from "react";
+import { toast } from "sonner";
 import DoctorModal from "./components/DoctorModal";
 
 const DoctorPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [deleteDoctor] = useDeleteDoctorMutation();
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedTerm = useDebounced({
@@ -31,7 +36,10 @@ const DoctorPage = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      // Your delete logic here
+      const res = await deleteDoctor(id).unwrap();
+      if (res?.id) {
+        toast.success("Doctor is Deleted Successfully!!");
+      }
     } catch (error: any) {
       console.error(error.message);
     }
