@@ -86,7 +86,7 @@ const Specialties = () => {
             my: 3,
           }}
         >
-          <DataGrid rows={data} columns={columns} />
+          <DataGrid rows={data} columns={columns} hideFooter={true} />
         </Box>
       ) : (
         <Box sx={{ width: "full", p: "100px" }}>
