@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import { SxProps, styled } from "@mui/material/styles";
 import * as React from "react";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
